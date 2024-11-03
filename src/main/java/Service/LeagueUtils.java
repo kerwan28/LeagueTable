@@ -3,53 +3,72 @@ package Service;
 import Interface.ServiceInterface;
 import Pojo.Score;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LeagueUtils implements ServiceInterface {
 
-    public static void storeResults(String line, List<String> results, List<String> temp){
-        String s = line.replaceAll("[^a-zA-Z0-9]\s", "");
-        //Splitting to remove everything besides words and digits
-        String[] parts = s.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-        results.add(parts[0].stripTrailing());
-        results.add(parts[1]);
-        results.add(parts[2].strip());
-        results.add(parts[3]);
-        String team1 = parts[0].stripTrailing(), team2 = parts[2].strip();
-        if(!temp.contains(team1)) {
-            temp.add(team1);
-        }
-        if(!temp.contains(team2)) {
-            temp.add(team2);
-        }
+    public static void storeResults(String line, List<String> results, Set<String> teams) {
+        // Updated regex to handle commas and whitespace without introducing empty elements
+        String[] parts = line.split("\\s*,?\\s*(?<=\\D)(?=\\d)|(?<=\\d)\\s*,?\\s*(?=\\D)");
+
+        // Filter out any empty parts
+        List<String> filteredParts = Arrays.stream(parts)
+                .filter(part -> !part.isEmpty())
+                .map(String::trim)
+                .toList();
+
+        // Add filtered parts to results
+        results.add(filteredParts.get(0));  // Team 1 name
+        results.add(filteredParts.get(1));  // Team 1 score
+        results.add(filteredParts.get(2));  // Team 2 name
+        results.add(filteredParts.get(3));  // Team 2 score
+
+        // Add teams to the set to ensure no duplicates
+        teams.add(filteredParts.get(0));
+        teams.add(filteredParts.get(2));
     }
 
-    public static void calculatePoints(List<String> temp,List<String> results ,List<Score> scores){
-        for (String team : temp) {
-            int total = 0;
-            for (int j = 0; j < results.size(); j += 4) {
 
-                if (team.equalsIgnoreCase(results.get(j))) {
-                    if (Integer.parseInt(results.get(j + 1)) > Integer.parseInt(results.get(j + 3))) {
-                        total += 3;
-                    } else if (Integer.parseInt(results.get(j + 1)) == Integer.parseInt(results.get(j + 3))) {
-                        total += 1;
-                    }
-                } else if (team.equalsIgnoreCase(results.get(j + 2))) {
-                    if (Integer.parseInt(results.get(j + 3)) > Integer.parseInt(results.get(j + 1))) {
-                        total += 3;
-                    } else if (Integer.parseInt(results.get(j + 3)) == Integer.parseInt(results.get(j + 1))) {
-                        total += 1;
-                    }
-                }
-            }
-            Score newScore = new Score(total, team);
-            if (!scores.contains(newScore)) {
-                scores.add(newScore);
-            }
+
+    public static void calculatePoints(Set<String> teams, List<String> results, List<Score> scores) {
+        Map<String, Integer> teamPoints = new HashMap<>();
+
+        // Initialize team points
+        for (String team : teams) {
+            teamPoints.put(team, 0);
         }
+
+        // Process each fixture in the results
+        for (int i = 0; i < results.size(); i += 4) {
+            String team1 = results.get(i);
+            int score1 = Integer.parseInt(results.get(i + 1));
+            String team2 = results.get(i + 2);
+            int score2 = Integer.parseInt(results.get(i + 3));
+
+            // Calculate points for the match
+            int team1Points = calculateMatchPoints(score1, score2, true);
+            int team2Points = calculateMatchPoints(score1, score2, false);
+
+            // Update total points for each team
+            teamPoints.put(team1, teamPoints.get(team1) + team1Points);
+            teamPoints.put(team2, teamPoints.get(team2) + team2Points);
+        }
+
+        // Populate the scores list
+        scores.clear();
+        for (Map.Entry<String, Integer> entry : teamPoints.entrySet()) {
+            scores.add(new Score(entry.getValue(), entry.getKey()));
+        }
+
+        // Sort scores in descending order by points, then alphabetically by team name
         scores.sort(Comparator.comparing(Score::getScore).reversed().thenComparing(Score::getName));
+    }
+
+    public static int calculateMatchPoints(int score1, int score2, boolean isTeam1) {
+        if (score1 > score2) return isTeam1 ? 3 : 0;
+        if (score1 < score2) return isTeam1 ? 0 : 3;
+        return 1;  // A draw
     }
 
 }

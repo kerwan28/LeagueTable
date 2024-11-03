@@ -5,9 +5,8 @@ import Service.LeagueUtils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 import Pojo.Score;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +34,7 @@ public class Main {
                 try {
                     FileReader in = new FileReader("src\\main\\resources\\fixtures.txt");
                     BufferedReader br = new BufferedReader(in);
-                    List<String> temp = new ArrayList<>();
+                    Set<String> temp = new HashSet<>();
                     List<String> results = new ArrayList<>();
 
                     String line;
