@@ -1,6 +1,6 @@
 package Interface;
 
-import org.leaguetable.Score;
+import Pojo.Score;
 
 import java.util.List;
 

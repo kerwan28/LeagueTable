@@ -1,5 +1,10 @@
-package org.leaguetable;
+package Pojo;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class Score {
 
     public int score;
@@ -10,19 +15,4 @@ public class Score {
         this.name = name;
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

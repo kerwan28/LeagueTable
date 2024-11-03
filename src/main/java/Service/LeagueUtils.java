@@ -1,8 +1,9 @@
 package Service;
 
 import Interface.ServiceInterface;
-import org.leaguetable.Score;
+import Pojo.Score;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class LeagueUtils implements ServiceInterface {
@@ -48,6 +49,7 @@ public class LeagueUtils implements ServiceInterface {
                 scores.add(newScore);
             }
         }
+        scores.sort(Comparator.comparing(Score::getScore).reversed().thenComparing(Score::getName));
     }
 
 }

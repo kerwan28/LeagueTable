@@ -6,14 +6,16 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import org.leaguetable.Score;
+import Pojo.Score;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Main {
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
@@ -41,9 +43,9 @@ public class Main {
                     while ((line = br.readLine()) != null) {
                         LeagueUtils.storeResults(line, results,temp);
                     }
-                    List<org.leaguetable.Score> scores = new ArrayList<>();
+                    List<Score> scores = new ArrayList<>();
                     LeagueUtils.calculatePoints(temp,results,scores);
-                    scores.sort(Comparator.comparing(Score::getScore).reversed().thenComparing(Score::getName));
+
                     int counter = 1;
                     for(Score s : scores) {
                         System.out.println(counter + ". " + s.getName() +", " + s.getScore() + " pts");
@@ -63,7 +65,7 @@ public class Main {
                     }
 
                 }catch(IOException e) {
-                    e.printStackTrace();
+                    log.info(e.toString());
                 }
 
             } else if (choice == 2) {
