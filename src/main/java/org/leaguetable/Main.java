@@ -1,5 +1,6 @@
 package org.leaguetable;
 
+import Pojo.ClubData;
 import Service.LeagueUtils;
 
 import java.io.BufferedReader;
@@ -7,7 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import Pojo.Score;
+import Pojo.ClubData;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -15,64 +16,73 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        do {
 
-        while(true) {
+            try {
 
-            System.out.println("******************************************************************************"
-                    + "\n                       Ranking Calculator V1.0"
-                    + "\n******************************************************************************");
+                Scanner scanner = new Scanner(System.in);
 
-            System.out.println("1: Display rankings");
-            System.out.println("2: Exit");
-            System.out.println();
+                System.out.println("******************************************************************************"
+                        + "\n                       Ranking Calculator V1.0"
+                        + "\n******************************************************************************");
 
-            System.out.print("Please enter a number: ");
-            int choice = scanner.nextInt();
-            if (choice == 1) {
+                System.out.println("1: Display rankings");
+                System.out.println("2: Exit");
+                System.out.println();
 
-                try {
-                    FileReader in = new FileReader("src\\main\\resources\\fixtures.txt");
-                    BufferedReader br = new BufferedReader(in);
-                    Set<String> temp = new HashSet<>();
-                    List<String> results = new ArrayList<>();
+                System.out.print("Please enter a number: ");
+                int choice = scanner.nextInt();
+                if (choice == 1) {
 
-                    String line;
+                    try {
+                        FileReader in = new FileReader("src\\main\\resources\\fixtures.txt");
+                        BufferedReader br = new BufferedReader(in);
+                        Set<String> temp = new HashSet<>();
+                        List<String> results = new ArrayList<>();
 
-                    while ((line = br.readLine()) != null) {
-                        LeagueUtils.storeResults(line, results,temp);
+                        String line;
+
+                        while ((line = br.readLine()) != null) {
+                            LeagueUtils.storeResults(line, results, temp);
+                        }
+                        List<ClubData> scores = new ArrayList<>();
+                        LeagueUtils.calculatePoints(temp, results, scores);
+
+                        int counter = 1;
+                        for (ClubData s : scores) {
+                            System.out.println(counter + ". " + s.getName() + ", " + s.getScore() + " pts");
+                            counter++;
+                        }
+                        System.out.println();
+                        System.out.println("1: Return to main menu");
+                        System.out.println("2: Exit");
+
+                        int choice2 = scanner.nextInt();
+
+                        if (choice2 == 1) {
+                            continue;
+                        } else if (choice2 == 2) {
+                            System.out.println("Goodbye");
+                            System.exit(0);
+                        }else{
+                            System.out.println("Invalid number. Please select only numbers from the given list");
+                            System.out.println("Returning to main menu");
+                        }
+
+                    } catch (IOException e) {
+                        log.info(e.toString());
                     }
-                    List<Score> scores = new ArrayList<>();
-                    LeagueUtils.calculatePoints(temp,results,scores);
 
-                    int counter = 1;
-                    for(Score s : scores) {
-                        System.out.println(counter + ". " + s.getName() +", " + s.getScore() + " pts");
-                        counter++;
-                    }
-                    System.out.println();
-                    System.out.println("1: Return to main menu");
-                    System.out.println("2: Exit");
-
-                    int choice2 = scanner.nextInt();
-
-                    if(choice2 == 1){
-                        continue;
-                    }else if(choice2 == 2){
-                        System.out.println("Goodbye");
-                        System.exit(0);
-                    }
-
-                }catch(IOException e) {
-                    log.info(e.toString());
+                } else if (choice == 2) {
+                    System.out.println("Goodbye");
+                    System.exit(0);
+                } else {
+                    System.out.println("Invalid number. Please select only numbers from the given list");
                 }
-
-            } else if (choice == 2) {
-                System.out.println("Goodbye");
-                System.exit(0);
-            } else {
-                System.out.println("Invalid number. Please select only numbers from the given list");
+            }catch(InputMismatchException e){
+                System.out.println("Please enter a number form the given list");
+                System.out.println();
             }
-        }
+        }while(true);
     }
 }

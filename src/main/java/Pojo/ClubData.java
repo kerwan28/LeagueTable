@@ -5,12 +5,12 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class Score {
+public class ClubData {
 
     public int score;
     public String name;
 
-    public Score(int score, String name){
+    public ClubData(int score, String name){
         this.score = score;
         this.name = name;
     }

@@ -12,8 +12,8 @@ cd LeagueTable
 For Windows: mvnw clean
 For *nix based machines: ./mvnw clean package
 
-Run using java -jar targe/LeagueTable-x.x.x.jar where x.x.x is the most recent successful build number
+Run using java -jar target/LeagueTable-x.x.x.jar where x.x.x is the most recent successful build number
 
-Once runnign the program will have two numbered options:
+Once running the program will have two numbered options:
 1 - Displays the league rankings
 2 - Exits the program

@@ -1,7 +1,7 @@
 package Service;
 
 import Interface.ServiceInterface;
-import Pojo.Score;
+import Pojo.ClubData;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ public class LeagueUtils implements ServiceInterface {
 
 
 
-    public static void calculatePoints(Set<String> teams, List<String> results, List<Score> scores) {
+    public static void calculatePoints(Set<String> teams, List<String> results, List<ClubData> scores) {
         Map<String, Integer> teamPoints = new HashMap<>();
 
         // Initialize team points
@@ -58,11 +58,11 @@ public class LeagueUtils implements ServiceInterface {
         // Populate the scores list
         scores.clear();
         for (Map.Entry<String, Integer> entry : teamPoints.entrySet()) {
-            scores.add(new Score(entry.getValue(), entry.getKey()));
+            scores.add(new ClubData(entry.getValue(), entry.getKey()));
         }
 
         // Sort scores in descending order by points, then alphabetically by team name
-        scores.sort(Comparator.comparing(Score::getScore).reversed().thenComparing(Score::getName));
+        scores.sort(Comparator.comparing(ClubData::getScore).reversed().thenComparing(ClubData::getName));
     }
 
     public static int calculateMatchPoints(int score1, int score2, boolean isTeam1) {
