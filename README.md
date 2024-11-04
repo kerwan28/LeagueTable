@@ -20,3 +20,8 @@ Once running the program will have two numbered options:
 1 - Displays the league rankings
 
 2 - Exits the program
+
+## Notes
+Built using Java 17 and Maven
+
+Local Installation of Maven is not needed to run the program
