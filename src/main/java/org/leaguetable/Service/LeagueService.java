@@ -7,8 +7,6 @@ import java.util.Set;
 
 public interface LeagueService {
 
-    public static void storeResults(String line, List<String> results, Set<String> teams) {}
-    public static void calculatePoints(Set<String> teams, List<String> results, List<ClubData> scores){}
-
-
+    public void storeResults(String line, List<String> results, Set<String> teams);
+    public void calculatePoints(Set<String> teams, List<String> results, List<ClubData> scores);
 }

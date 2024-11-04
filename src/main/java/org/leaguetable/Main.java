@@ -1,7 +1,8 @@
 package org.leaguetable;
 
 import org.leaguetable.Model.ClubData;
-import org.leaguetable.Service.LeagueServiceImplementation;
+import org.leaguetable.Service.LeagueService;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
+import org.leaguetable.Service.LeagueServiceImplementation;
 
 @Slf4j
 public class Main {
@@ -20,6 +22,7 @@ public class Main {
             try {
 
                 Scanner scanner = new Scanner(System.in);
+                LeagueService leagueService = new LeagueServiceImplementation();
 
                 System.out.println("******************************************************************************"
                         + "\n                       Ranking Calculator V1.0"
@@ -42,10 +45,10 @@ public class Main {
                         String line;
 
                         while ((line = br.readLine()) != null) {
-                            LeagueServiceImplementation.storeResults(line, results, temp);
+                            leagueService.storeResults(line, results, temp);
                         }
                         List<ClubData> scores = new ArrayList<>();
-                        LeagueServiceImplementation.calculatePoints(temp, results, scores);
+                        leagueService.calculatePoints(temp, results, scores);
 
                         int counter = 1;
                         for (ClubData s : scores) {

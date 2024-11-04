@@ -6,7 +6,7 @@ import java.util.*;
 
 public class LeagueServiceImplementation implements LeagueService {
 
-    public static void storeResults(String line, List<String> results, Set<String> teams) {
+    public void storeResults(String line, List<String> results, Set<String> teams) {
         // Updated regex to handle commas and whitespace without introducing empty elements
         String[] parts = line.split("\\s*,?\\s*(?<=\\D)(?=\\d)|(?<=\\d)\\s*,?\\s*(?=\\D)");
 
@@ -29,7 +29,7 @@ public class LeagueServiceImplementation implements LeagueService {
 
 
 
-    public static void calculatePoints(Set<String> teams, List<String> results, List<ClubData> scores) {
+    public void calculatePoints(Set<String> teams, List<String> results, List<ClubData> scores) {
         Map<String, Integer> teamPoints = new HashMap<>();
 
         // Initialize team points
@@ -63,7 +63,7 @@ public class LeagueServiceImplementation implements LeagueService {
         scores.sort(Comparator.comparing(ClubData::getScore).reversed().thenComparing(ClubData::getName));
     }
 
-    public static int calculateMatchPoints(int score1, int score2, boolean isTeam1) {
+    private int calculateMatchPoints(int score1, int score2, boolean isTeam1) {
         if (score1 > score2) return isTeam1 ? 3 : 0;
         if (score1 < score2) return isTeam1 ? 0 : 3;
         return 1;  // A draw

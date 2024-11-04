@@ -1,5 +1,7 @@
 package org.leaguetable;
 
+import org.leaguetable.Model.ClubData;
+import org.leaguetable.Service.LeagueService;
 import org.leaguetable.Service.LeagueServiceImplementation;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,8 @@ class MainTest {
         String line = "Lions 4, Snakes 0";
         List<String> teams = new ArrayList<>();
         Set<String> results = new HashSet<>();
-        LeagueServiceImplementation.storeResults(line, teams, results);
+        LeagueService leagueService = new LeagueServiceImplementation();
+        leagueService.storeResults(line, teams, results);
 
         log.info("Checking that team names are extracted correctly");
         List<String> sortedResults = new ArrayList<>(results);
@@ -60,7 +63,8 @@ class MainTest {
         String line = "FC Awesome 1, Tarantulas 3";
         List<String> teams = new ArrayList<>();
         Set<String> results = new HashSet<>();
-        LeagueServiceImplementation.storeResults(line, teams, results);
+        LeagueService leagueService = new LeagueServiceImplementation();
+        leagueService.storeResults(line, teams, results);
 
         log.info("Checking that team names with whitespace are extracted correctly");
         List<String> sortedResults = new ArrayList<>(results);
@@ -72,14 +76,27 @@ class MainTest {
     }
 
     @Test
-    public void testPointsCalculation() {
-        int points1 = LeagueServiceImplementation.calculateMatchPoints(3,0,true);
-        int points2 = LeagueServiceImplementation.calculateMatchPoints(1,3, true);
-        int points3 = LeagueServiceImplementation.calculateMatchPoints(2,2,false);
-        assertEquals(3, points1);
-        assertEquals(0, points2);
-        assertEquals(1, points3);
+    public void calculateResults(){
+        Set<String> teams = new HashSet<>();
+        teams.add("Lions");
+        teams.add("Tarantulas");
+        teams.add("FC Awesome");
+
+        List<String> results = new ArrayList<>();
+        results.add("FC Awesome");
+        results.add("2");
+        results.add("Tarantulas");
+        results.add("2");
+        results.add("Lions");
+        results.add("4");
+        results.add("Tarantulas");
+        results.add("0");
+
+        List<ClubData> scores = new ArrayList<>();
+        LeagueService leagueService = new LeagueServiceImplementation();
+        leagueService.calculatePoints(teams,results,scores);
+
+        assertEquals("Lions", scores.get(0).getName());
+        assertEquals(3, scores.get(0).getScore());
     }
-
-
 }
