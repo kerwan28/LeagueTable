@@ -1,12 +1,10 @@
-package Service;
+package org.leaguetable.Service;
 
-import Interface.ServiceInterface;
-import Pojo.ClubData;
+import org.leaguetable.Model.ClubData;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class LeagueUtils implements ServiceInterface {
+public class LeagueServiceImplementation implements LeagueService {
 
     public static void storeResults(String line, List<String> results, Set<String> teams) {
         // Updated regex to handle commas and whitespace without introducing empty elements

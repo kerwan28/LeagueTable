@@ -1,6 +1,6 @@
 package org.leaguetable;
 
-import Service.LeagueUtils;
+import org.leaguetable.Service.LeagueServiceImplementation;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ class MainTest {
         String line = "Lions 4, Snakes 0";
         List<String> teams = new ArrayList<>();
         Set<String> results = new HashSet<>();
-        LeagueUtils.storeResults(line, teams, results);
+        LeagueServiceImplementation.storeResults(line, teams, results);
 
         log.info("Checking that team names are extracted correctly");
         List<String> sortedResults = new ArrayList<>(results);
@@ -60,7 +60,7 @@ class MainTest {
         String line = "FC Awesome 1, Tarantulas 3";
         List<String> teams = new ArrayList<>();
         Set<String> results = new HashSet<>();
-        LeagueUtils.storeResults(line, teams, results);
+        LeagueServiceImplementation.storeResults(line, teams, results);
 
         log.info("Checking that team names with whitespace are extracted correctly");
         List<String> sortedResults = new ArrayList<>(results);
@@ -73,9 +73,9 @@ class MainTest {
 
     @Test
     public void testPointsCalculation() {
-        int points1 = LeagueUtils.calculateMatchPoints(3,0,true);
-        int points2 = LeagueUtils.calculateMatchPoints(1,3, true);
-        int points3 = LeagueUtils.calculateMatchPoints(2,2,false);
+        int points1 = LeagueServiceImplementation.calculateMatchPoints(3,0,true);
+        int points2 = LeagueServiceImplementation.calculateMatchPoints(1,3, true);
+        int points3 = LeagueServiceImplementation.calculateMatchPoints(2,2,false);
         assertEquals(3, points1);
         assertEquals(0, points2);
         assertEquals(1, points3);

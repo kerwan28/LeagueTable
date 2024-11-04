@@ -1,14 +1,13 @@
 package org.leaguetable;
 
-import Pojo.ClubData;
-import Service.LeagueUtils;
+import org.leaguetable.Model.ClubData;
+import org.leaguetable.Service.LeagueServiceImplementation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import Pojo.ClubData;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -43,10 +42,10 @@ public class Main {
                         String line;
 
                         while ((line = br.readLine()) != null) {
-                            LeagueUtils.storeResults(line, results, temp);
+                            LeagueServiceImplementation.storeResults(line, results, temp);
                         }
                         List<ClubData> scores = new ArrayList<>();
-                        LeagueUtils.calculatePoints(temp, results, scores);
+                        LeagueServiceImplementation.calculatePoints(temp, results, scores);
 
                         int counter = 1;
                         for (ClubData s : scores) {
@@ -80,7 +79,7 @@ public class Main {
                     System.out.println("Invalid number. Please select only numbers from the given list");
                 }
             }catch(InputMismatchException e){
-                System.out.println("Please enter a number form the given list");
+                System.out.println("Invalid number. Please enter a number from the given list");
                 System.out.println();
             }
         }while(true);
