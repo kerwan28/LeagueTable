@@ -1,5 +1,6 @@
 package org.leaguetable.Service;
 
+import org.leaguetable.Globals.Constants;
 import org.leaguetable.Model.ClubData;
 
 import java.util.*;
@@ -64,9 +65,25 @@ public class LeagueServiceImplementation implements LeagueService {
     }
 
     private int calculateMatchPoints(int score1, int score2, boolean isTeam1) {
-        if (score1 > score2) return isTeam1 ? 3 : 0;
-        if (score1 < score2) return isTeam1 ? 0 : 3;
-        return 1;  // A draw
+        if (score1 > score2) return isTeam1 ? Constants.WIN : Constants.LOSS;
+        if (score1 < score2) return isTeam1 ? Constants.LOSS : Constants.WIN;
+        return Constants.DRAW;  // A draw
+    }
+
+    public void printLeagueTable(List<ClubData> list){
+
+        int rank = 0;
+        int displayRank = 0;
+        int previousPoints = -1;
+
+        for(ClubData club : list){
+            rank++;
+            if(club.getScore() != previousPoints){
+                displayRank = rank;
+            }
+            String pointLabel = club.getScore() == 1 ? "pt" : "pts";
+            System.out.println(displayRank + "." + club.getName() + ", " + club.getScore() + " "+ pointLabel);
+        }
     }
 
 }

@@ -4,9 +4,7 @@ import org.leaguetable.Model.ClubData;
 import org.leaguetable.Service.LeagueService;
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,25 +34,27 @@ public class Main {
                 int choice = scanner.nextInt();
                 if (choice == 1) {
 
-                    try {
-                        FileReader in = new FileReader("src\\main\\resources\\fixtures.txt");
-                        BufferedReader br = new BufferedReader(in);
+                    try{
+                        InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("fixtures.txt");
+
+                        if(inputStream == null){
+                            System.out.println("File not found in resources");
+                            return;
+                        }
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                         Set<String> temp = new HashSet<>();
                         List<String> results = new ArrayList<>();
 
                         String line;
 
-                        while ((line = br.readLine()) != null) {
+                        while ((line = reader.readLine()) != null) {
                             leagueService.storeResults(line, results, temp);
                         }
                         List<ClubData> scores = new ArrayList<>();
                         leagueService.calculatePoints(temp, results, scores);
 
-                        int counter = 1;
-                        for (ClubData s : scores) {
-                            System.out.println(counter + ". " + s.getName() + ", " + s.getScore() + " pts");
-                            counter++;
-                        }
+                        leagueService.printLeagueTable(scores);
                         System.out.println();
                         System.out.println("1: Return to main menu");
                         System.out.println("2: Exit");
@@ -72,7 +72,9 @@ public class Main {
                         }
 
                     } catch (IOException e) {
-                        log.info(e.toString());
+                        log.info("Error reading the file." + e.getMessage());
+                        System.exit(0);
+
                     }
 
                 } else if (choice == 2) {
